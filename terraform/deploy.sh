@@ -3,8 +3,17 @@ sudo yum update -y
 sudo yum install git -y
 wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+export HOME=/home/ec2-user
+export GOPATH=$HOME/go
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+export GOCACHE=$GOPATH/.cache
+mkdir -p $GOPATH
+mkdir -p $GOCACHE
 
-git clone https://github.com/Rakowskiii/agh-cloud-simple-web-service
-cd agh-cloud-simple-web-service/app
-go run main.go
+git clone https://github.com/Rakowskiii/agh-cloud-simple-web-service /home/ec2-user/app
+cd /home/ec2-user/app
+
+echo $GOPATH $GOPATH $HOME
+go build -o app 
+
+nohup ./app > /var/log/myapp.log 2>&1 &

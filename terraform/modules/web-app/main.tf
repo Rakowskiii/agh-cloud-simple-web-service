@@ -21,14 +21,15 @@ resource "aws_lb" "alb" {
  name               = "alb"
  internal           = false
  load_balancer_type = "application"
-#  security_groups    = [aws_security_group.lb_sg.id]
+ security_groups    = [aws_security_group.alb.id]
+
  subnets            = var.public_subnets
 }
 
 resource "aws_lb_listener" "my_alb_listener" {
  load_balancer_arn = aws_lb.alb.arn
- port              = "443"
- protocol          = "HTTPS"
+ port              = "80"
+ protocol          = "HTTP"
 
  default_action {
    type             = "forward"
@@ -45,13 +46,6 @@ resource "aws_security_group" "web" {
   name_prefix = "web-sg"
   vpc_id      = var.vpc_id
 
-  ingress {
-    protocol    = "tcp"
-    from_port   = var.web_app_port 
-    to_port     = var.web_app_port 
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     protocol    = "-1"
     from_port   = 0
@@ -65,4 +59,35 @@ resource "aws_security_group" "web" {
     to_port     = 22
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_security_group" "alb" {
+  name_prefix = "alb-sg"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80 
+    to_port     = 80 
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group_rule" "alb_to_web" {
+  type              = "egress"
+  from_port         = var.web_app_port
+  to_port           = var.web_app_port
+  protocol          = "tcp"
+  security_group_id = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.web.id
+}
+
+
+resource "aws_security_group_rule" "web_from_alb" {
+  type              = "ingress"
+  from_port         = var.web_app_port
+  to_port           = var.web_app_port
+  protocol          = "tcp"
+  security_group_id = aws_security_group.web.id
+  source_security_group_id = aws_security_group.alb.id
 }
