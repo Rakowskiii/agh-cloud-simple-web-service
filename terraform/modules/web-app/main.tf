@@ -4,7 +4,7 @@ resource "aws_instance" "web" {
   subnet_id     = var.public_subnets[0]
   key_name      = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.web.id]
-  user_data = file("${path.root}/deploy.sh")
+  user_data = file("${path.root}/deploy_app.sh")
 
   tags = {
     Name = "web-app-instance"
