@@ -14,3 +14,5 @@ variable "allowed_cidrs" {
   description = "CIDR blocks allowed to access the database"
   default     = ["10.0.1.0/24"]
 }
+
+variable "db_sg_id" {}
