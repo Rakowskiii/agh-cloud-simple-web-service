@@ -10,10 +10,10 @@ export GOCACHE=$GOPATH/.cache
 mkdir -p $GOPATH
 mkdir -p $GOCACHE
 
-git clone https://github.com/Rakowskiii/agh-cloud-simple-web-service /home/ec2-user/app
-cd /home/ec2-user/app
+git clone https://github.com/Rakowskiii/agh-cloud-simple-web-service /home/ec2-user/cloud
+cd /home/ec2-user/cloud/app
 
-echo $GOPATH $GOPATH $HOME
-go build -o app 
+go env
+go build -o app maing.go 
 
 nohup ./app > /var/log/myapp.log 2>&1 &
