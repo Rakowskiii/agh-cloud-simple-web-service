@@ -29,5 +29,5 @@ variable "availability_zones" {
 
 variable "web_app_port" {
   description = "Port used by web app"
-  default = "8080"
+  default     = "8080"
 }

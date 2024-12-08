@@ -1,6 +1,4 @@
-variable "db_name" {
-  description = "Database name"
-}
+variable "db_name" {}
 
 variable "vpc_id" {
   description = "VPC ID"
@@ -16,3 +14,7 @@ variable "allowed_cidrs" {
 }
 
 variable "db_sg_id" {}
+
+variable "db_user" {
+  default = "dbuser"
+}

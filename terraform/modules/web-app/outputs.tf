@@ -1,9 +1,9 @@
 output "web_instances_ids" {
-    value = aws_instance.web[*].id
+  value = aws_instance.web[*].id
 }
 
 output "alb_dns_name" {
-    value = aws_lb.alb.dns_name
+  value = aws_lb.alb.dns_name
 }
 
 output "web_instances_ips" {
