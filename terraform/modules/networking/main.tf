@@ -39,9 +39,4 @@ resource "aws_subnet" "private" {
     Name = "private-subnet-${count.index}"
   }
 }
-resource "aws_lb_target_group" "web_app" {
-  name     = "web-app-target-group"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-}
+

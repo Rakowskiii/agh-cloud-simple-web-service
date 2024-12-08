@@ -15,6 +15,8 @@ resource "aws_db_instance" "main" {
   }
 }
 
+
+//TODO: why main
 resource "aws_db_subnet_group" "main" {
   name       = "db-subnet-group"
   subnet_ids = var.private_subnets
