@@ -6,6 +6,7 @@ resource "aws_instance" "web" {
   key_name               = var.ssh_key_name
   vpc_security_group_ids = [var.web_app_sg_id]
   user_data              = "${data.template_file.init.rendered}" 
+  user_data_replace_on_change = true
   iam_instance_profile   = "LabInstanceProfile"
 
   tags = {

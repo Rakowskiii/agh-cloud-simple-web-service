@@ -3,7 +3,7 @@ sudo yum update -y
 sudo yum install git python3 python3-pip -y
 
 git clone https://github.com/Rakowskiii/agh-cloud-simple-web-service /home/ec2-user/cloud
-cd /home/ec2-user/cloud/app
+cd /home/ec2-user/cloud/python_app
 
 python3 -m pip install -r requirements.txt
 
