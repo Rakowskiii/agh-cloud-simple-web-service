@@ -7,8 +7,8 @@ cd /home/ec2-user/cloud/app
 
 python3 -m pip install -r requirements.txt
 
-export SECRET_ID = ${secret_id}
-export REGION = ${region}
-export DB_NAME = ${db_name}
+export SECRET_ID="${secret_id}"
+export REGION="${region}"
+export DB_NAME="${db_name}"
 
 nohup python3 app.py > /var/log/myapp.log 2>&1 &
