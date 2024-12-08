@@ -33,16 +33,32 @@ connection = pymysql.connect(
 cursor = connection.cursor()
 cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
 
+def add_user(name: str):
+    try:
+        connection.ping(reconnect=True)  
+        cursor = connection.cursor()
+        query = f"INSERT INTO {TABLE_NAME} (name) VALUES (%s)"
+        cursor.execute(query, (name,))
+        connection.commit()  
+        cursor.close()
+        return "User added successfully!"
+    except Exception as e:
+        print(f"Error during insertion: {e}")  # Log for debugging
+        return f"Error occurred: {e}"
 
 
-def execute_query(query: str, params):
-    connection.ping(reconnect=True) 
-    cursor = connection.cursor()
-    cursor.execute(query, params)
-    res = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return res
+def get_users():
+    try:
+        connection.ping(reconnect=True)  
+        cursor = connection.cursor()
+        query = f"SELECT id, name FROM {TABLE_NAME}"
+        cursor.execute(query)
+        users = cursor.fetchall()
+        cursor.close()
+        return users
+    except Exception as e:
+        print(f"Error during retrieval: {e}")  
+        return []
 
 @app.route('/')
 def index():
@@ -54,28 +70,18 @@ def home():
 
 @app.route('/content')
 def content():
-
-    query = f"SELECT id,name FROM {TABLE_NAME}"
-    params = ()
-    content = execute_query(query, params)
-
+    content = get_users()  
     return render_template('content.html', content=content)
+
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':      
         name = request.form['name']
-
-        query = f"INSERT INTO {TABLE_NAME} (name) VALUES (%s)"
-        try:
-            execute_query(query, (name,))
-            response = "Item added successfully!"
-        except Exception as e:
-            response = f"Error has occurred: {e}"
-        
+        response = add_user(name)  # Use the new add_user function
         return render_template('add.html', response=response)
-    
     return render_template('add.html')
+
 
 def get_port():
     return 8080
