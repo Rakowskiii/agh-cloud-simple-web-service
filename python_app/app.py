@@ -29,7 +29,6 @@ connection = pymysql.connect(
     port= DB_PORT,
     database = DB_NAME 
 )
-
 # Create table if not exists
 cursor = connection.cursor()
 cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
@@ -37,10 +36,10 @@ cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT 
 
 
 def execute_query(query: str, params):
+    connection.ping(reconnect=True) 
     cursor = connection.cursor()
     cursor.execute(query, params)
     res = cursor.fetchall()
-    print(res)
     cursor.close()
     connection.close()
     return res
