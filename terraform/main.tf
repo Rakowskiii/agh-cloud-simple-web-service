@@ -40,7 +40,7 @@ resource "aws_key_pair" "web_app_ssh_keypair" {
 
 module "web_app" {
   source           = "./modules/web-app"
-  public_subnets   = module.networking.public_subnets
+  public_subnets_ids   = module.networking.public_subnets
   vpc_id           = module.networking.vpc_id
   web_app_port     = var.web_app_port
   web_app_sg_id    = module.security_groups.web_app_sg_id
