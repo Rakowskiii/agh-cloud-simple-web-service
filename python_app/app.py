@@ -30,6 +30,11 @@ connection = pymysql.connect(
     database = DB_NAME 
 )
 
+# Create table if not exists
+cursor = connection.cursor()
+cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
+
+
 
 def execute_query(query: str, params):
     cursor = connection.cursor()
@@ -60,13 +65,11 @@ def content():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':      
-        id = request.form['id']
         name = request.form['name']
 
-        query = f"INSERT INTO {TABLE_NAME} (id, name) VALUES (%s, %s)"
-        params = (id, name)
+        query = f"INSERT INTO {TABLE_NAME} (name) VALUES (%s)"
         try:
-            execute_query(query, params)
+            execute_query(query, (name,))
             response = "Item added successfully!"
         except Exception as e:
             response = f"Error has occurred: {e}"
