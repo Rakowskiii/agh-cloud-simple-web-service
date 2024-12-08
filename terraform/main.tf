@@ -50,3 +50,12 @@ module "web_app" {
   aws_region         = var.aws_region
   db_name            = var.db_name
 }
+
+
+module "bastion" {
+  source           = "./modules/bastion"
+  public_subnets_ids   = module.networking.public_subnets
+  vpc_id           = module.networking.vpc_id
+  bast_sg_id    = module.security_groups.bast_sg_id
+  ssh_key_name     = aws_key_pair.web_app_ssh_keypair.key_name
+}
