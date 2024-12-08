@@ -46,4 +46,5 @@ module "web_app" {
   web_app_sg_id    = module.security_groups.web_app_sg_id
   alb_sg_id    = module.security_groups.alb_sg_id
   ssh_key_name     = aws_key_pair.web_app_ssh_keypair.key_name
+  db_pass_secret        = module.database.db_pass_secret
 }

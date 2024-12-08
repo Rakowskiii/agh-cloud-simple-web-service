@@ -10,3 +10,5 @@ variable "web_app_sg_id" {}
 variable "alb_sg_id" {}
 
 variable "ssh_key_name" {}
+
+variable "db_pass_secret" {}
