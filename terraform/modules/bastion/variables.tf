@@ -1,6 +1,6 @@
 variable "vpc_id" {}
-variable "public_subnets" {}
+variable "public_subnets_ids" {}
 
-variable "bastion_sg_id" {}
+variable "bast_sg_id" {}
 
 variable "ssh_key_name" {}
