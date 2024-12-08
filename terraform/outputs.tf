@@ -2,6 +2,14 @@ output "web_instances_ips" {
   value = module.web_app.web_instances_ips
 }
 
+# output "bast_instances_ips" {
+#   value = module.bastion.bast_instances_ips
+# }
+
+output "bast_instances_ip" {
+  value = module.bastion.bast_instances_ip
+}
+
 output "database_endpoint" {
   value = module.database.db_endpoint
 }
