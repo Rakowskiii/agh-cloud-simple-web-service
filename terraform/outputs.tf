@@ -6,8 +6,8 @@ output "web_instances_ips" {
 #   value = module.bastion.bast_instances_ips
 # }
 
-output "bast_instances_ip" {
-  value = module.bastion.bast_instances_ip
+output "bast_instance_ip" {
+  value = module.bastion.bast_instance_ip
 }
 
 output "database_endpoint" {
@@ -22,3 +22,6 @@ output "ssh_private_key" {
   value     = tls_private_key.web_app_ssh_private_key.private_key_pem
   sensitive = true
 }
+
+
+
