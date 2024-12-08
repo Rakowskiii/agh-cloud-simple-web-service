@@ -34,7 +34,7 @@ resource "tls_private_key" "web_app_ssh_private_key" {
 }
 
 resource "aws_key_pair" "web_app_ssh_keypair" {
-  key_name   = "web_app_ssh_keypair"
+  key_name   = "web-app-ssh-keypair-${terraform.workspace}"
   public_key = tls_private_key.web_app_ssh_private_key.public_key_openssh
 }
 

@@ -13,7 +13,7 @@ resource "aws_instance" "web" {
 }
 
 resource "aws_lb" "alb" {
- name               = "alb"
+ name               = "alb-${terraform.workspace}"
  internal           = false
  load_balancer_type = "application"
  security_groups    = [var.alb_sg_id]
@@ -22,7 +22,7 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_lb_target_group" "web_app" {
-  name     = "web-app-target-group"
+  name     = "web-app-target-group-${terraform.workspace}"
   port     = var.web_app_port 
   protocol = "HTTP"
   vpc_id   = var.vpc_id

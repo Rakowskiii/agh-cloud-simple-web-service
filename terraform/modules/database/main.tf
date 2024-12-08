@@ -18,7 +18,7 @@ resource "aws_db_instance" "main" {
 
 //TODO: why main
 resource "aws_db_subnet_group" "main" {
-  name       = "db-subnet-group"
+  name       = "db-subnet-group-${terraform.workspace}"
   subnet_ids = var.private_subnets
 
   tags = {
