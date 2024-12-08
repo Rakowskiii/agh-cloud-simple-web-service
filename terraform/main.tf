@@ -28,6 +28,16 @@ module "database" {
 }
 
 
+resource "tls_private_key" "web_app_ssh_private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "web_app_ssh_keypair" {
+  key_name   = "web_app_ssh_keypair"
+  public_key = tls_private_key.web_app_ssh_private_key.public_key_openssh
+}
+
 module "web_app" {
   source           = "./modules/web-app"
   public_subnets   = module.networking.public_subnets
@@ -35,4 +45,5 @@ module "web_app" {
   web_app_port     = var.web_app_port
   web_app_sg_id    = module.security_groups.web_app_sg_id
   alb_sg_id    = module.security_groups.alb_sg_id
+  ssh_key_name     = aws_key_pair.web_app_ssh_keypair.key_name
 }

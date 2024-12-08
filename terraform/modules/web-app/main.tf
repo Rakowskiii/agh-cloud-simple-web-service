@@ -2,7 +2,7 @@ resource "aws_instance" "web" {
   ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2
   instance_type = "t2.micro"
   subnet_id     = var.public_subnets[0]
-  key_name      = aws_key_pair.deployer.key_name
+  key_name      = var.ssh_key_name
   vpc_security_group_ids = [var.web_app_sg_id]
   user_data = file("${path.root}/deploy_app.sh")
 
@@ -45,8 +45,4 @@ resource "aws_lb_listener" "my_alb_listener" {
  }
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = file("~/.ssh/id_ed25519.pub")
-}
 
