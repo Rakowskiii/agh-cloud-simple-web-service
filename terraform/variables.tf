@@ -19,7 +19,7 @@ variable "private_subnet_cidrs" {
 }
 
 variable "db_name" {
-  default = "web-app-database"
+  default = "webappdatabase"
 }
 
 variable "availability_zones" {
