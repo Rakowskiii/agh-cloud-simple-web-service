@@ -5,7 +5,7 @@ resource "aws_instance" "web" {
   subnet_id              = element(var.public_subnets_ids, count.index)
   key_name               = var.ssh_key_name
   vpc_security_group_ids = [var.web_app_sg_id]
-  user_data              = file("${path.root}/deploy_app.sh")
+  user_data              = "${data.template_file.init.rendered}" 
   iam_instance_profile   = "LabInstanceProfile"
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_instance" "web" {
 }
 
 data "template_file" "init" {
-  template = file("${path.root}/deploy_app.sh")
+  template = file("${path.root}/deploy_app.sh.tpl")
 
   vars = {
     db_name   = var.db_name
