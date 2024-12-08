@@ -15,7 +15,7 @@ DB_PORT = 3306
 TABLE_NAME = "USERS"
 
 client = boto3.client('secretsmanager', region_name=REGION)
-get_secret_value_response = client.get_secret_value(SecretId=SECRET_ID)    
+get_secret_value_response = client.get_secret_value(SecretId=SECRET_ID)
 secret = get_secret_value_response['SecretString']
 secret_dict = json.loads(secret)
 db_host = secret_dict['host']
@@ -56,7 +56,7 @@ def home():
 @app.route('/content')
 def content():
 
-    query = f"SELECT * FROM {TABLE_NAME}"
+    query = f"SELECT id,name FROM {TABLE_NAME}"
     params = ()
     content = execute_query(query, params)
 

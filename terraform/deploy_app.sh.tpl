@@ -11,4 +11,6 @@ export SECRET_ID="${secret_id}"
 export REGION="${region}"
 export DB_NAME="${db_name}"
 
+env > /home/ec2-user/env.txt
+
 nohup python3 app.py > /var/log/myapp.log 2>&1 &
