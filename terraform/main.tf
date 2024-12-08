@@ -4,27 +4,27 @@ provider "aws" {
 
 
 module "security_groups" {
-  source = "./modules/security-groups"
-  web_app_port     = var.web_app_port
-  vpc_id           = module.networking.vpc_id
+  source       = "./modules/security-groups"
+  web_app_port = var.web_app_port
+  vpc_id       = module.networking.vpc_id
 }
 
 module "networking" {
-  source           = "./modules/networking"
-  vpc_cidr_block   = var.vpc_cidr_block
-  public_subnet_cidrs = var.public_subnet_cidrs
+  source               = "./modules/networking"
+  vpc_cidr_block       = var.vpc_cidr_block
+  public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
-  vpc_id           = module.networking.vpc_id
-  availability_zones  = var.availability_zones
+  vpc_id               = module.networking.vpc_id
+  availability_zones   = var.availability_zones
 }
 
 
 module "database" {
-  source           = "./modules/database"
-  vpc_id           = module.networking.vpc_id
-  db_name          = var.db_name
-  private_subnets  = module.networking.private_subnets
-  db_sg_id    = module.security_groups.db_sg_id
+  source          = "./modules/database"
+  vpc_id          = module.networking.vpc_id
+  db_name         = var.db_name
+  private_subnets = module.networking.private_subnets
+  db_sg_id        = module.security_groups.db_sg_id
 }
 
 
@@ -39,12 +39,14 @@ resource "aws_key_pair" "web_app_ssh_keypair" {
 }
 
 module "web_app" {
-  source           = "./modules/web-app"
-  public_subnets_ids   = module.networking.public_subnets
-  vpc_id           = module.networking.vpc_id
-  web_app_port     = var.web_app_port
-  web_app_sg_id    = module.security_groups.web_app_sg_id
-  alb_sg_id    = module.security_groups.alb_sg_id
-  ssh_key_name     = aws_key_pair.web_app_ssh_keypair.key_name
-  db_pass_secret        = module.database.db_pass_secret
+  source             = "./modules/web-app"
+  public_subnets_ids = module.networking.public_subnets
+  vpc_id             = module.networking.vpc_id
+  web_app_port       = var.web_app_port
+  web_app_sg_id      = module.security_groups.web_app_sg_id
+  alb_sg_id          = module.security_groups.alb_sg_id
+  ssh_key_name       = aws_key_pair.web_app_ssh_keypair.key_name
+  db_pass_secret     = module.database.db_pass_secret
+  aws_region         = var.aws_region
+  db_name            = var.db_name
 }

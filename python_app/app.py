@@ -7,25 +7,31 @@ import json
 app = Flask(__name__)
 template_dir = os.path.relpath('./templates')
 
-def execute_query(query: str, params):
-    client = boto3.client('secretsmanager', region_name="us-east-1")
-    get_secret_value_response = client.get_secret_value(SecretId="SecretsManagerTutorialAdmin-vd0e2uVyx9Va")
-    secret = get_secret_value_response['SecretString']
-    secret_dict = json.loads(secret)
-    db_host = secret_dict['host']
-    db_port = secret_dict.get('port', 3306)
-    db_user = secret_dict['username']
-    db_pass = secret_dict['password']
-    db_name = secret_dict['dbname']
+SECRET_ID = os.environ.get('SECRET_ID')
+REGION = os.environ.get('REGION')
+DB_NAME = os.environ.get('DB_NAME')
 
-    connection = pymysql.connect(
+DB_PORT = 3306
+TABLE_NAME = "USERS"
+
+client = boto3.client('secretsmanager', region_name=REGION)
+get_secret_value_response = client.get_secret_value(SecretId=SECRET_ID)    
+secret = get_secret_value_response['SecretString']
+secret_dict = json.loads(secret)
+db_host = secret_dict['host']
+db_user = secret_dict['username']
+db_pass = secret_dict['password']
+
+connection = pymysql.connect(
     host=db_host,
     user=db_user,
     password=db_pass,
-    port=db_port,
-    database = "test_schema"            # DB name??
-    )
+    port= DB_PORT,
+    database = DB_NAME 
+)
 
+
+def execute_query(query: str, params):
     cursor = connection.cursor()
     cursor.execute(query, params)
     res = cursor.fetchall()
@@ -45,8 +51,7 @@ def home():
 @app.route('/content')
 def content():
 
-    table_name = "test_table"           # table name??
-    query = f"SELECT * FROM {table_name}"
+    query = f"SELECT * FROM {TABLE_NAME}"
     params = ()
     content = execute_query(query, params)
 
@@ -54,12 +59,11 @@ def content():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-    if request.method == 'POST':        # example values, TODO when DB will be up
+    if request.method == 'POST':      
         id = request.form['id']
         name = request.form['name']
 
-        table_name = "test_table"       # table name??
-        query = f"INSERT INTO {table_name} (id, name) VALUES (%s, %s)"
+        query = f"INSERT INTO {TABLE_NAME} (id, name) VALUES (%s, %s)"
         params = (id, name)
         try:
             execute_query(query, params)
