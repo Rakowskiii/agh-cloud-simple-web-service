@@ -1,4 +1,5 @@
 variable "vpc_id" {}
+variable "private_subnets_ids" {}
 variable "public_subnets_ids" {}
 variable "web_app_port" {
   description = "Port used by web app"
