@@ -1,13 +1,14 @@
 resource "aws_instance" "web" {
+  count      = length(var.public_subnets_ids)
   ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2
   instance_type = "t2.micro"
-  subnet_id     = var.public_subnets[0]
+  subnet_id     = element(var.public_subnets_ids, count.index) 
   key_name      = var.ssh_key_name
   vpc_security_group_ids = [var.web_app_sg_id]
   user_data = file("${path.root}/deploy_app.sh")
 
   tags = {
-    Name = "web-app-instance"
+    Name = "web-app-instance-${count.index}"
   }
 }
 
@@ -17,7 +18,7 @@ resource "aws_lb" "alb" {
  load_balancer_type = "application"
  security_groups    = [var.alb_sg_id]
 
- subnets            = var.public_subnets
+ subnets            = var.public_subnets_ids
 }
 
 resource "aws_lb_target_group" "web_app" {
@@ -29,8 +30,9 @@ resource "aws_lb_target_group" "web_app" {
 
 
 resource "aws_lb_target_group_attachment" "web_app" {
+  count            = length(aws_instance.web)
   target_group_arn = aws_lb_target_group.web_app.arn 
-  target_id        = aws_instance.web.id
+  target_id        = aws_instance.web[count.index].id
   port             = var.web_app_port 
 }
 

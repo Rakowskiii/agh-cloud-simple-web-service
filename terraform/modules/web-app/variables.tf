@@ -1,5 +1,5 @@
 variable "vpc_id" {}
-variable "public_subnets" {}
+variable "public_subnets_ids" {}
 variable "web_app_port" {
   description = "Port used by web app"
   default = "8080"
