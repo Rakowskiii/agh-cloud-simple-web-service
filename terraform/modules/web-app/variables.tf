@@ -8,3 +8,5 @@ variable "web_app_port" {
 variable "web_app_sg_id" {}
 
 variable "alb_sg_id" {}
+
+variable "ssh_key_name" {}
