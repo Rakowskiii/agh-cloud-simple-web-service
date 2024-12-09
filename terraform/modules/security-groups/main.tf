@@ -4,14 +4,6 @@ resource "aws_security_group" "web" {
   vpc_id      = var.vpc_id
 }
 
-resource "aws_security_group_rule" "ssh_to_web" {
-  type            = "ingress"
-  from_port       = 22
-  to_port         = 22
-  protocol        = "tcp"
-  security_group_id = aws_security_group.web.id
-  cidr_blocks     = ["0.0.0.0/0"]
-}
 
 resource "aws_security_group_rule" "web_to_internet" {
   type                     = "egress"
@@ -71,13 +63,6 @@ resource "aws_security_group_rule" "alb_to_web" {
 resource "aws_security_group" "db" {
   name_prefix = "db-sg"
   vpc_id      = var.vpc_id
-
-  # egress {
-  #   protocol    = "-1"
-  #   from_port   = 0
-  #   to_port     = 0
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
 }
 
 resource "aws_security_group_rule" "db_from_webapp" {
@@ -88,3 +73,44 @@ resource "aws_security_group_rule" "db_from_webapp" {
   security_group_id        = aws_security_group.db.id
   source_security_group_id = aws_security_group.web.id
 }
+
+
+// Bastion Security Group
+
+resource "aws_security_group" "bast" {
+  name_prefix = "bast-sg"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_security_group_rule" "bast_http_ingress" {
+  type            = "ingress"
+  from_port       = 22
+  to_port         = 22
+  protocol        = "tcp"
+  security_group_id = aws_security_group.bast.id
+  cidr_blocks     = ["0.0.0.0/0"]
+}
+
+
+resource "aws_security_group_rule" "bast_to_web" {
+  type              = "egress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.bast.id
+  source_security_group_id = aws_security_group.web.id
+}
+
+
+resource "aws_security_group_rule" "web_from_bast" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.web.id
+  source_security_group_id = aws_security_group.bast.id
+}
+
+
+
