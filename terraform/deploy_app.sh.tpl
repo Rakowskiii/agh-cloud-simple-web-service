@@ -10,6 +10,8 @@ python3 -m pip install -r requirements.txt
 export SECRET_ID="${secret_id}"
 export REGION="${region}"
 export DB_NAME="${db_name}"
+export DB_USER="${db_user}"
+export DB_ADDRESS="${db_addr}"
 
 
 

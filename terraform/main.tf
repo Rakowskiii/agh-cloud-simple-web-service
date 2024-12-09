@@ -25,6 +25,7 @@ module "database" {
   db_name         = var.db_name
   private_subnets = module.networking.private_subnets
   db_sg_id        = module.security_groups.db_sg_id
+  db_user         = var.db_user
 }
 
 
@@ -50,6 +51,8 @@ module "web_app" {
   db_pass_secret     = module.database.db_pass_secret
   aws_region         = var.aws_region
   db_name            = var.db_name
+  db_user= var.db_user
+  db_addr            = module.database.db_addr
 }
 
 

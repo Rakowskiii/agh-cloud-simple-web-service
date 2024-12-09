@@ -3,5 +3,9 @@ output "db_endpoint" {
 }
 
 output "db_pass_secret" {
-  value = aws_secretsmanager_secret.db_secret
+  value = aws_db_instance.main.master_user_secret[0].secret_arn
+}
+
+output "db_addr" {
+  value = aws_db_instance.main.address
 }
