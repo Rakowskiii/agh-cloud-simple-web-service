@@ -14,5 +14,5 @@ export DB_USER="${db_user}"
 export DB_ADDRESS="${db_addr}"
 
 
-
 nohup python3 app.py > /var/log/myapp.log 2>&1 &
+
