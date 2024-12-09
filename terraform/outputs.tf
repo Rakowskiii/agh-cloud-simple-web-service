@@ -20,4 +20,21 @@ output "ssh_private_key" {
 }
 
 
+output "ssh_config" {
+  value = templatefile("ssh_config.tpl", {
+    bastion_public_ip = module.bastion.bast_instance_ip.public_ip,
+    web_apps_ips = module.web_app.web_instances_ips
+  })
+  sensitive = true
+}
+
+output "ssh_connect_setup" {
+  value = "../scripts/ssh_config_all.sh"
+}
+
+
+output "ssh_connect_command" {
+  value = "ssh -F /tmp/web_app_cloud/ssh_config -i /tmp/web_app_cloud/priv_key.pem ec2-user@<bastion_public_or_web_serv_private_ip>"
+}
+
 
