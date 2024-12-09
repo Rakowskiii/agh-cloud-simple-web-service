@@ -24,7 +24,7 @@ def get_secret(secret_id):
             secret = get_secret_value_response['SecretString']
             return json.loads(secret)
         except Exception as e:
-            print(f"Error occurred: {e}")  # Log for debugging
+            print(f"Error occurred: {e}") 
             time.sleep(10)
 
 
@@ -33,14 +33,24 @@ db_host = secret_dict['host']
 db_user = secret_dict['username']
 db_pass = secret_dict['password']
 
-connection = pymysql.connect(
-    host=db_host,
-    user=db_user,
-    password=db_pass,
-    port= DB_PORT,
-    database = DB_NAME 
-)
-# Create table if not exists
+def connect_to_db():
+    for i in range(3):
+        try:
+            connection = pymysql.connect(
+                host=db_host,
+                user=db_user,
+                password=db_pass,
+                port= DB_PORT,
+                database = DB_NAME 
+            )
+            return connection
+        except Exception as e:
+            print(f"Error occurred: {e}") 
+            time.sleep(20)
+    print("Failed to connect to the database with 3 retries")
+
+
+connection = connect_to_db()
 cursor = connection.cursor()
 cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
 

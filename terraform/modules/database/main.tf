@@ -19,6 +19,7 @@ resource "aws_db_instance" "main" {
 resource "random_password" "db_password" {
   length  = 16
   special = true
+  override_special = "!@#%^&*()-_=+[]{}<>?"
 }
 
 resource "aws_secretsmanager_secret" "db_secret" {
@@ -36,7 +37,6 @@ resource "aws_secretsmanager_secret_version" "db_secret_version" {
 }
 
 
-//TODO: why main
 resource "aws_db_subnet_group" "main" {
   name       = "db-subnet-group-${terraform.workspace}"
   subnet_ids = var.private_subnets
@@ -46,3 +46,34 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
+
+resource "aws_secretsmanager_secret_rotation" "db_secret_rotation" {
+  secret_id           = aws_secretsmanager_secret.db_secret.id
+  rotation_lambda_arn = aws_lambda_function.rotation_lambda.arn
+  rotation_rules {
+    automatically_after_days = 1
+  }
+}
+
+resource "aws_lambda_function" "rotation_lambda" {
+  filename         = "lambda_rotation.zip"  
+  function_name    = "SecretRotationFunction-${terraform.workspace}"
+  role             = "arn:aws:iam::313167975375:role/LabRole" 
+  handler          = "rotation.lambda_handler"
+  runtime          = "python3.8"
+  source_code_hash = filebase64sha256("lambda_rotation.zip")
+
+  environment {
+    variables = {
+      SECRET_ARN = aws_secretsmanager_secret.db_secret.arn
+      INSTANCE_ID = aws_db_instance.main.id
+    }
+  }
+}
+
+resource "aws_lambda_permission" "allow_secretsmanager" {
+  statement_id  = "AllowExecutionFromSecretsManager"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.rotation_lambda.function_name
+  principal     = "secretsmanager.amazonaws.com"
+}
