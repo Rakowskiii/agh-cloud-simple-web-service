@@ -11,6 +11,8 @@ template_dir = os.path.relpath('./templates')
 SECRET_ID = os.environ.get('SECRET_ID')
 REGION = os.environ.get('REGION')
 DB_NAME = os.environ.get('DB_NAME')
+USERNAME = os.environ.get('USERNAME')
+HOST = os.environ.get('HOST')
 
 DB_PORT = 3306
 TABLE_NAME = "USERS"
@@ -29,16 +31,14 @@ def get_secret(secret_id):
 
 
 secret_dict = get_secret(SECRET_ID) 
-db_host = secret_dict['host']
-db_user = secret_dict['username']
 db_pass = secret_dict['password']
 
 def connect_to_db():
     for i in range(3):
         try:
             connection = pymysql.connect(
-                host=db_host,
-                user=db_user,
+                host=HOST,
+                user=USERNAME,
                 password=db_pass,
                 port= DB_PORT,
                 database = DB_NAME 

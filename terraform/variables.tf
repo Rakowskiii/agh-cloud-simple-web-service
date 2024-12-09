@@ -22,6 +22,10 @@ variable "db_name" {
   default = "webappdatabase"
 }
 
+variable "db_user" {
+  default = "dbuser"
+}
+
 variable "availability_zones" {
   description = "List of availability zones"
   default     = ["us-east-1a", "us-east-1b"]

@@ -25,7 +25,9 @@ data "template_file" "init" {
   vars = {
     db_name   = var.db_name
     region    = var.aws_region
-    secret_id = var.db_pass_secret.name
+    secret_id = var.db_pass_secret
+    db_user   = var.db_user
+    db_addr   = var.db_addr
   }
 }
 

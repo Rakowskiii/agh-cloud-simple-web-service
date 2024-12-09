@@ -15,6 +15,4 @@ variable "allowed_cidrs" {
 
 variable "db_sg_id" {}
 
-variable "db_user" {
-  default = "dbuser"
-}
+variable "db_user" {}
