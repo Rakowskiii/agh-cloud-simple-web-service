@@ -9,6 +9,11 @@ resource "aws_instance" "web" {
   user_data_replace_on_change = true
   iam_instance_profile   = "LabInstanceProfile"
 
+
+  depends_on = [
+    var.db_pass_secret
+  ]
+
   tags = {
     Name = "web-app-instance-${count.index}"
   }
