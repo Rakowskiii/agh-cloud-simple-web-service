@@ -42,7 +42,7 @@ connection = pymysql.connect(
 )
 # Create table if not exists
 cursor = connection.cursor()
-cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
+cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_NAME} (id INT  AUTO_INCREMENTPRIMARY KEY, name VARCHAR(255))")
 
 def add_user(name: str):
     try:
@@ -54,7 +54,7 @@ def add_user(name: str):
         cursor.close()
         return "User added successfully!"
     except Exception as e:
-        print(f"Error during insertion: {e}")  # Log for debugging
+        print(f"Error during insertion: {e}") 
         return f"Error occurred: {e}"
 
 
@@ -89,7 +89,7 @@ def content():
 def add():
     if request.method == 'POST':      
         name = request.form['name']
-        response = add_user(name)  # Use the new add_user function
+        response = add_user(name)  
         return render_template('add.html', response=response)
     return render_template('add.html')
 

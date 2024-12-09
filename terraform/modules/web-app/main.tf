@@ -1,6 +1,6 @@
 resource "aws_instance" "web" {
   count                  = length(var.public_subnets_ids)
-  ami                    = "ami-0c02fb55956c7d316" # Amazon Linux 2
+  ami                    = "ami-0c02fb55956c7d316" 
   instance_type          = "t2.micro"
   subnet_id              = element(var.public_subnets_ids, count.index)
   key_name               = var.ssh_key_name
@@ -8,7 +8,6 @@ resource "aws_instance" "web" {
   user_data              = "${data.template_file.init.rendered}" 
   user_data_replace_on_change = true
   iam_instance_profile   = "LabInstanceProfile"
-
 
   depends_on = [
     var.db_pass_secret

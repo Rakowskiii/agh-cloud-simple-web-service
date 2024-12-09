@@ -11,6 +11,4 @@ export SECRET_ID="${secret_id}"
 export REGION="${region}"
 export DB_NAME="${db_name}"
 
-
-
 nohup python3 app.py > /var/log/myapp.log 2>&1 &
