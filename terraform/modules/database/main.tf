@@ -66,6 +66,7 @@ resource "aws_lambda_function" "rotation_lambda" {
   environment {
     variables = {
       SECRET_ARN = aws_secretsmanager_secret.db_secret.arn
+      INSTANCE_ID = aws_db_instance.main.id
     }
   }
 }
