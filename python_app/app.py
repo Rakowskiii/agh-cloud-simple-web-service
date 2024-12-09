@@ -24,7 +24,7 @@ def get_secret(secret_id):
             secret = get_secret_value_response['SecretString']
             return json.loads(secret)
         except Exception as e:
-            print(f"Error occurred: {e}")  # Log for debugging
+            print(f"Error occurred: {e}")  
             time.sleep(10)
 
 
