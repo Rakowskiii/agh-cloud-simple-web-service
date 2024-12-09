@@ -34,7 +34,7 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [var.alb_sg_id]
 
-  subnets            = var.private_subnets_ids
+  subnets            = var.public_subnets_ids
 }
 
 resource "aws_lb_target_group" "web_app" {
