@@ -4,6 +4,16 @@ resource "aws_security_group" "web" {
   vpc_id      = var.vpc_id
 }
 
+
+resource "aws_security_group_rule" "web_to_internet" {
+  type                     = "egress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = aws_security_group.web.id
+  cidr_blocks     = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "web_from_alb" {
   type                     = "ingress"
   from_port                = var.web_app_port
@@ -66,6 +76,7 @@ resource "aws_security_group_rule" "db_from_webapp" {
 
 
 // Bastion Security Group
+
 resource "aws_security_group" "bast" {
   name_prefix = "bast-sg"
   vpc_id      = var.vpc_id

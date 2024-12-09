@@ -1,6 +1,3 @@
-output "bast_instance_id" {
-  value = aws_instance.bast.id
-}
 
 output "bast_instance_ip" {
   value = {
