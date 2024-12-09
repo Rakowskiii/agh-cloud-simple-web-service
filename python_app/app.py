@@ -11,8 +11,8 @@ template_dir = os.path.relpath('./templates')
 SECRET_ID = os.environ.get('SECRET_ID')
 REGION = os.environ.get('REGION')
 DB_NAME = os.environ.get('DB_NAME')
-USERNAME = os.environ.get('USERNAME')
-HOST = os.environ.get('HOST')
+USERNAME = os.environ.get('DB_USER')
+HOST = os.environ.get('DB_ADDRESS')
 
 DB_PORT = 3306
 TABLE_NAME = "USERS"

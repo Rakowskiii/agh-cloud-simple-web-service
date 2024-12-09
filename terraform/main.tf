@@ -40,26 +40,26 @@ resource "aws_key_pair" "web_app_ssh_keypair" {
 }
 
 module "web_app" {
-  source             = "./modules/web-app"
-  private_subnets_ids   = module.networking.private_subnets
-  public_subnets_ids = module.networking.public_subnets
-  vpc_id             = module.networking.vpc_id
-  web_app_port       = var.web_app_port
-  web_app_sg_id      = module.security_groups.web_app_sg_id
-  alb_sg_id          = module.security_groups.alb_sg_id
-  ssh_key_name       = aws_key_pair.web_app_ssh_keypair.key_name
-  db_pass_secret     = module.database.db_pass_secret
-  aws_region         = var.aws_region
-  db_name            = var.db_name
-  db_user= var.db_user
-  db_addr            = module.database.db_addr
+  source              = "./modules/web-app"
+  private_subnets_ids = module.networking.private_subnets
+  public_subnets_ids  = module.networking.public_subnets
+  vpc_id              = module.networking.vpc_id
+  web_app_port        = var.web_app_port
+  web_app_sg_id       = module.security_groups.web_app_sg_id
+  alb_sg_id           = module.security_groups.alb_sg_id
+  ssh_key_name        = aws_key_pair.web_app_ssh_keypair.key_name
+  db_pass_secret      = module.database.db_pass_secret
+  aws_region          = var.aws_region
+  db_name             = var.db_name
+  db_user             = var.db_user
+  db_addr             = module.database.db_addr
 }
 
 
 module "bastion" {
-  source           = "./modules/bastion"
-  public_subnets_ids   = module.networking.public_subnets
-  vpc_id           = module.networking.vpc_id
-  bast_sg_id    = module.security_groups.bast_sg_id
-  ssh_key_name     = aws_key_pair.web_app_ssh_keypair.key_name
+  source             = "./modules/bastion"
+  public_subnets_ids = module.networking.public_subnets
+  vpc_id             = module.networking.vpc_id
+  bast_sg_id         = module.security_groups.bast_sg_id
+  ssh_key_name       = aws_key_pair.web_app_ssh_keypair.key_name
 }
