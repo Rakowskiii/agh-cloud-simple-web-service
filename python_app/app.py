@@ -3,6 +3,7 @@ import os
 import boto3
 import pymysql
 import json
+import time
 
 app = Flask(__name__)
 template_dir = os.path.relpath('./templates')
@@ -15,9 +16,19 @@ DB_PORT = 3306
 TABLE_NAME = "USERS"
 
 client = boto3.client('secretsmanager', region_name=REGION)
-get_secret_value_response = client.get_secret_value(SecretId=SECRET_ID)
-secret = get_secret_value_response['SecretString']
-secret_dict = json.loads(secret)
+
+def get_secret(secret_id):
+    while True:
+        try:
+            get_secret_value_response = client.get_secret_value(SecretId=secret_id)
+            secret = get_secret_value_response['SecretString']
+            return json.loads(secret)
+        except Exception as e:
+            print(f"Error occurred: {e}")  # Log for debugging
+            time.sleep(10)
+
+
+secret_dict = get_secret(SECRET_ID) 
 db_host = secret_dict['host']
 db_user = secret_dict['username']
 db_pass = secret_dict['password']
