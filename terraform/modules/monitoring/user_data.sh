@@ -32,4 +32,3 @@ export DB_NAME="${db_name}"
 
 
 nohup python3 app.py > /var/log/myapp.log 2>&1 &
-
