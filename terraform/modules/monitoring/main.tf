@@ -6,7 +6,7 @@ resource "aws_ssm_parameter" "cw_agent" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "alarm_elb" {
-  alarm_name                = "ELB_400_requests_alarm"
+  alarm_name                = "ELB_400_requests_alarm-${terraform.workspace}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = 2
   threshold                 = 10
@@ -54,7 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "alarm_elb" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "logins_rds" {
-  alarm_name                = "Connections_Attempts_RDS"
+  alarm_name                = "Connections_Attempts_RDS-${terraform.workspace}"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = 2
   threshold                 = 1000
