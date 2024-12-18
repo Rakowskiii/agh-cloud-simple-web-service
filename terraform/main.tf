@@ -52,6 +52,7 @@ module "web_app" {
   aws_region         = var.aws_region
   db_name            = var.db_name
   db_user             = var.db_user
+  db_addr             = module.database.db_addr
   ssm_parameter      = module.monitoring.ssm_parameter
 }
 
