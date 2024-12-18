@@ -9,3 +9,7 @@ output "db_pass_secret" {
 output "db_addr" {
   value = aws_db_instance.main.address
 }
+
+output "rds" {
+  value = aws_db_instance.main
+}

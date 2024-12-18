@@ -18,3 +18,5 @@ variable "aws_region" {}
 variable "db_name" {}
 variable "db_user" {}
 variable "db_addr" {}
+
+variable "ssm_parameter" {}

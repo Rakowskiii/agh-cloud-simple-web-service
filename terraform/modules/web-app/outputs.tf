@@ -6,6 +6,10 @@ output "alb_dns_name" {
   value = aws_lb.alb.dns_name
 }
 
+output "load_balancer" {
+  value = aws_lb.alb
+}
+
 output "web_instances_ips" {
   value = {
     for instance in aws_instance.web :

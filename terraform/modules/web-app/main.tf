@@ -9,7 +9,6 @@ resource "aws_instance" "web" {
   user_data_replace_on_change = true
   iam_instance_profile        = "LabInstanceProfile"
 
-
   depends_on = [
     var.db_pass_secret
   ]
@@ -18,6 +17,7 @@ resource "aws_instance" "web" {
     Name = "web-app-instance-${count.index}"
   }
 }
+
 
 data "template_file" "init" {
   template = file("${path.root}/deploy_app.sh.tpl")
@@ -28,6 +28,7 @@ data "template_file" "init" {
     secret_id = var.db_pass_secret
     db_user   = var.db_user
     db_addr   = var.db_addr
+    ssm_cloudwatch_config = var.ssm_parameter.name
   }
 }
 
