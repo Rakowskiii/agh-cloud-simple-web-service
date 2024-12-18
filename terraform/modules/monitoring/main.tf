@@ -40,7 +40,7 @@ resource "aws_cloudwatch_metric_alarm" "alarm_elb" {
     id = "m2"
 
     metric {
-      metric_name = "HTTPCode_ELB_4XX_Count"
+      metric_name = "HTTPCode_Target_4XX_Count"
       namespace   = "AWS/ApplicationELB"
       period      = 120
       stat        = "Sum"
